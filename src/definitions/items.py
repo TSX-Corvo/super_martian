@@ -44,6 +44,12 @@ def pickup_yellow_coin(coin: GameItem, player: Player):
     pickup_coin(coin, player, 50, 54, random.uniform(20, 25))
 
 
+def pickup_key(key: GameItem, player: Player):
+    print("BRUH")
+    # Go to next level
+    pass
+
+
 ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
     "coins": {
         62: {
@@ -74,5 +80,14 @@ ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
             "collidable": True,
             "on_consume": pickup_yellow_coin,
         },
+    },
+    "keys": {
+        68: {
+            "texture_id": "tiles",
+            "solidness": dict(top=False, right=False, bottom=False, left=False),
+            "consumable": True,
+            "collidable": True,
+            "on_consume": pickup_key,
+        }
     }
 }

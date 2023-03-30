@@ -11,6 +11,7 @@ from typing import List, Tuple
 
 import pygame
 
+import settings
 from src import mixins
 from src.Tile import Tile
 from src.definitions import tiles
@@ -80,12 +81,12 @@ class Tilemap:
 
     def collides_tile_on(
         self, i: int, j: int, another: mixins.CollidableMixin, side: str
-    ) -> bool:
+    ) -> Tuple[int, int, List[List[Tile]]]:
         if 0 <= i < self.rows and 0 <= j < self.cols:
             for layer in self.layers:
                 if layer[i][j].collides_on(another, side):
-                    return True
-        return False
+                    return (i, j, layer)
+        return ()
 
     def check_solidness_on(self, i: int, j: int, side: str) -> bool:
         """

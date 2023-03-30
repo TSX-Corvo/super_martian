@@ -28,6 +28,7 @@ input_handler.InputHandler.set_keyboard_action(input_handler.KEY_LEFT, "move_lef
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_a, "move_left")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_SPACE, "jump")
 input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "jump")
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_f, "debug")
 
 # Size we want to emulate
 VIRTUAL_WIDTH = 400
@@ -41,7 +42,9 @@ PLAYER_SPEED = 80
 
 GRAVITY = 980
 
-NUM_LEVELS = 1
+NUM_LEVELS = 2
+
+KEY_SPAWNER_FRAME_INDEX = 69
 
 BASE_DIR = pathlib.Path(__file__).parent
 
