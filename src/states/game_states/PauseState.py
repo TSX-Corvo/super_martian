@@ -16,7 +16,7 @@ from gale.state_machine import BaseState
 from gale.text import render_text
 
 import settings
-
+from src.Controller import game_controller
 
 class PauseState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
@@ -43,7 +43,7 @@ class PauseState(BaseState):
 
         render_text(
             surface,
-            f"Score: {self.player.score}",
+            f"Score: {game_controller.score}",
             settings.FONTS["small"],
             5,
             5,

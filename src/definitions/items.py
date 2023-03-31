@@ -16,6 +16,8 @@ from gale.timer import Timer
 import settings
 from src.GameItem import GameItem
 from src.Player import Player
+from src.Camera import Camera
+from src.Controller import game_controller
 
 
 def pickup_coin(
@@ -23,8 +25,8 @@ def pickup_coin(
 ) -> None:
     settings.SOUNDS["pickup_coin"].stop()
     settings.SOUNDS["pickup_coin"].play()
-    player.score += points
-    player.coins_counter[color] += 1
+    game_controller.score += points
+    game_controller.coins_counter[color] += 1
     Timer.after(time, lambda: coin.respawn())
 
 
@@ -45,10 +47,13 @@ def pickup_yellow_coin(coin: GameItem, player: Player):
 
 
 def pickup_key(key: GameItem, player: Player):
-    print("BRUH")
     # Go to next level
-    pass
-
+    level = player.game_level
+    level.change_level(2)
+    player.tilemap = level.tilemap
+    player.x = 0
+    player.y = settings.VIRTUAL_HEIGHT - 66
+   
 
 ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
     "coins": {

@@ -20,6 +20,7 @@ import settings
 from src.Camera import Camera
 from src.GameLevel import GameLevel
 from src.Player import Player
+from src.Controller import game_controller
 
 
 class PlayState(BaseState):
@@ -100,7 +101,7 @@ class PlayState(BaseState):
 
         render_text(
             surface,
-            f"Score: {self.player.score}",
+            f"Score: {game_controller.score}",
             settings.FONTS["small"],
             5,
             5,

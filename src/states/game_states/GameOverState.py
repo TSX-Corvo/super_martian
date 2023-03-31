@@ -14,7 +14,7 @@ from gale.state_machine import BaseState
 from gale.text import render_text
 
 import settings
-
+from src.Controller import game_controller
 
 class GameOverState(BaseState):
     def enter(self, player) -> None:
@@ -27,6 +27,7 @@ class GameOverState(BaseState):
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "enter" and input_data.pressed:
+            game_controller.reset_score()
             self.state_machine.change("play")
 
     def render(self, surface: pygame.Surface) -> None:
@@ -45,7 +46,7 @@ class GameOverState(BaseState):
 
         y = 50
 
-        for color, amount in self.player.coins_counter.items():
+        for color, amount in game_controller.coins_counter.items():
             surface.blit(
                 settings.TEXTURES["tiles"],
                 (settings.VIRTUAL_WIDTH // 2 - 32, y),
@@ -73,7 +74,7 @@ class GameOverState(BaseState):
 
         render_text(
             surface,
-            f"Score: {self.player.score}",
+            f"Score: {game_controller.score}",
             settings.FONTS["small"],
             settings.VIRTUAL_WIDTH // 2,
             y + 10,

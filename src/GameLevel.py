@@ -64,3 +64,9 @@ class GameLevel:
         for item in self.items:
             if item.in_play:
                 item.render(surface)
+
+    def change_level(self, num_level: int) -> None:
+        self.tilemap = None
+        self.creatures = []
+        self.items = []
+        settings.LevelLoader().load(self, settings.TILEMAPS[num_level])

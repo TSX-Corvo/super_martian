@@ -35,8 +35,6 @@ class Player(GameEntity):
                 "jump": {"frames": [2]},
             },
         )
-        self.score = 0
-        self.coins_counter = {54: 0, 55: 0, 61: 0, 62: 0}
 
     def handle_tilemap_collision_on_top(self) -> bool:
         collision_rect = self.get_collision_rect()
