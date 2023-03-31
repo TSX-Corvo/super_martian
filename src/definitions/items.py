@@ -48,11 +48,7 @@ def pickup_yellow_coin(coin: GameItem, player: Player):
 
 def pickup_key(key: GameItem, player: Player):
     # Go to next level
-    level = player.game_level
-    level.change_level(2)
-    player.tilemap = level.tilemap
-    player.x = 0
-    player.y = settings.VIRTUAL_HEIGHT - 66
+    game_controller.go_next_level(player)
    
 
 ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
