@@ -25,6 +25,7 @@ from src.Controller import game_controller
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
+        game_controller.play_state = self
         self.level = enter_params.get("level", 1)
         self.camera = enter_params.get(
             "camera", Camera(0, 0, settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT)
@@ -49,12 +50,14 @@ class PlayState(BaseState):
             if 0 < self.timer <= 5:
                 settings.SOUNDS["timer"].play()
 
-        Timer.every(1, countdown_timer)
+        if game_controller.score < game_controller.scoregoal:
+            Timer.every(1, countdown_timer)
         InputHandler.register_listener(self)
 
     def exit(self) -> None:
         InputHandler.unregister_listener(self)
         Timer.clear()
+        game_controller.play_state = None
 
     def update(self, dt: float) -> None:
         if self.player.is_dead or self.timer == 0:

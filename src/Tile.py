@@ -21,6 +21,7 @@ class Tile(GameObject):
         height: int,
         frame_index: int,
         soliness: Dict[str, bool],
+        visible: bool = True
     ) -> None:
         self.i = i
         self.j = j
@@ -33,3 +34,4 @@ class Tile(GameObject):
             frame_index,
             soliness,
         )
+        self.visible = visible

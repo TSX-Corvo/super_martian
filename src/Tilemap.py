@@ -42,7 +42,13 @@ class Tilemap:
             tile_def["solidness"] if tile_def is not None else Tile.DEFAULT_SOLIDNESS
         )
         self.layers[-1][i][j] = Tile(
-            i, j, self.tilewidth, self.tileheight, frame_index, solidness
+            i, 
+            j, 
+            self.tilewidth, 
+            self.tileheight, 
+            frame_index, 
+            solidness, 
+            tile_def.get("visible", True) if tile_def is not None else True
         )
 
     def set_render_boundaries(self, render_rect: pygame.Rect) -> None:
@@ -77,6 +83,8 @@ class Tilemap:
         for layer in self.layers:
             for i in range(*self.render_rows_range):
                 for j in range(*self.render_cols_range):
+                    if not layer[i][j].visible:
+                        continue
                     layer[i][j].render(surface)
 
     def collides_tile_on(

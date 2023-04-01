@@ -25,8 +25,7 @@ def pickup_coin(
 ) -> None:
     settings.SOUNDS["pickup_coin"].stop()
     settings.SOUNDS["pickup_coin"].play()
-    game_controller.score += points
-    game_controller.coins_counter[color] += 1
+    game_controller.add_score(points, color)
     Timer.after(time, lambda: coin.respawn())
 
 
