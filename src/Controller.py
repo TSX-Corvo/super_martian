@@ -24,6 +24,7 @@ class Controller(metaclass=SingletonMeta):
         self.scoregoal = 1
         self.level: int = 1
         self.play_state: Any = None
+        self.timers = []
 
     def reset_score(self) -> None:
         self.score = 0
@@ -34,7 +35,12 @@ class Controller(metaclass=SingletonMeta):
         self.coins_counter[color] += amount
         if self.score >= self.scoregoal:
             # Level cleared
+
+            # Stop countdown
+            self.timers = Timer.items
             Timer.clear()
+
+            # Make goal visible and collidable
             layers = self.play_state.game_level.tilemap.layers
             spawner = list(filter(lambda tile: tile.frame_index == settings.KEY_SPAWNER_FRAME_INDEX, 
                 [item for sublist in layers[-1] for item in sublist]
@@ -45,6 +51,11 @@ class Controller(metaclass=SingletonMeta):
 
             spawner[0].solidness = {k: True for k in spawner[0].solidness.keys()}
             spawner[0].visible = True
+
+            # Make remaining items not collidable
+            for item in self.play_state.game_level.items:
+                item.collidable = False
+                item.consumable = False
 
     def go_next_level(self, player: Player) -> None:
         # Update current state
@@ -60,5 +71,12 @@ class Controller(metaclass=SingletonMeta):
 
         # Update play state
         self.play_state.timer = 30
+
+        # Restore timer for the next level
+        if not self.timers:
+            raise Exception("Could't restore timer")
+
+        Timer.items = self.timers
+        self.timers = []
 
 game_controller = Controller()
