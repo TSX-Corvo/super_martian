@@ -85,8 +85,8 @@ ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
         68: {
             "texture_id": "tiles",
             "solidness": dict(top=False, right=False, bottom=False, left=False),
-            "consumable": True,
-            "collidable": True,
+            "consumable": False,
+            "collidable": False,
             "on_consume": pickup_key,
         }
     }

@@ -9,6 +9,8 @@ This file contains the class Player.
 """
 from typing import TypeVar
 
+from gale.timer import Timer
+
 import settings
 from src.GameEntity import GameEntity
 from src.states.entities import player_states
@@ -64,10 +66,25 @@ class Player(GameEntity):
                         "item_name": "keys",
                         "frame_index": 68,
                         "x": tile.x,
-                        "y": tile.y - 16,
+                        "y": tile.y,
                         "width": 16,
                         "height": 16,
                     })
+                # Added item must be the last item on the game level list
+                added_item = self.game_level.items[-1]
+
+                # Tween
+                def on_finish():
+                    added_item.collidable = True
+                    added_item.consumable = True
+
+                Timer.tween(
+                    0.5,
+                    [
+                        (added_item, {"y": added_item.y - 16})
+                    ],
+                    on_finish=on_finish
+                )
         
             return True
 

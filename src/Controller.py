@@ -57,6 +57,8 @@ class Controller(metaclass=SingletonMeta):
                 item.collidable = False
                 item.consumable = False
 
+            settings.SOUNDS["level_clear"].play()
+
     def go_next_level(self, player: Player) -> None:
         # Update current state
         self.level += 1
