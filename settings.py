@@ -46,6 +46,8 @@ NUM_LEVELS = 2
 
 KEY_SPAWNER_FRAME_INDEX = 69
 
+LEVEL_CHANGE_DELAY = .5
+
 BASE_DIR = pathlib.Path(__file__).parent
 
 LevelLoader = loaders.TmxLevelLoader
@@ -75,6 +77,7 @@ SOUNDS = {
 }
 
 SOUNDS["pickup_coin"].set_volume(0.5)
+SOUNDS["jump"].set_volume(0.5)
 
 pygame.font.init()
 

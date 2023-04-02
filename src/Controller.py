@@ -1,10 +1,10 @@
+import pygame
 from typing import Dict, Any
-import settings
-
 from gale.timer import Timer
 
+import settings
 from src.Player import Player
-
+from src.Veil import Veil
 
 class SingletonMeta(type):
 
@@ -21,7 +21,7 @@ class Controller(metaclass=SingletonMeta):
     def __init__(self) -> None:
         self.score: int = 0
         self.coins_counter: Dict[int, int] = {54: 0, 55: 0, 61: 0, 62: 0}
-        self.scoregoal = 1
+        self.scoregoal = 5
         self.level: int = 1
         self.play_state: Any = None
         self.timers = []
@@ -59,26 +59,18 @@ class Controller(metaclass=SingletonMeta):
 
             settings.SOUNDS["level_clear"].play()
 
+    def get_score_goal(self, level: int) -> int:
+        return level * 50
+
     def go_next_level(self, player: Player) -> None:
-        # Update current state
-        self.level += 1
-        gamelevel = player.game_level
-        gamelevel.change_level(self.level)
-        self.scoregoal = self.level * 5
         
-        # Update player state
-        player.tilemap = gamelevel.tilemap
-        player.x = 0
-        player.y = settings.VIRTUAL_HEIGHT - 66
+        self.play_state.state_machine.change(
+            "transition", 
+            level=self.level,
+            game_level=self.play_state.game_level,
+            camera=self.play_state.camera,
+        )
 
-        # Update play state
-        self.play_state.timer = 30
-
-        # Restore timer for the next level
-        if not self.timers:
-            raise Exception("Could't restore timer")
-
-        Timer.items = self.timers
-        self.timers = []
+      
 
 game_controller = Controller()

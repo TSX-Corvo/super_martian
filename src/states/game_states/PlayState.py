@@ -21,6 +21,7 @@ from src.Camera import Camera
 from src.GameLevel import GameLevel
 from src.Player import Player
 from src.Controller import game_controller
+from src.Veil import Veil
 
 
 class PlayState(BaseState):
@@ -44,15 +45,28 @@ class PlayState(BaseState):
 
         self.timer = enter_params.get("timer", 30)
 
-        def countdown_timer():
-            self.timer -= 1
+        def start_level():
+            def countdown_timer():
+                self.timer -= 1
 
-            if 0 < self.timer <= 5:
-                settings.SOUNDS["timer"].play()
+                if 0 < self.timer <= 5:
+                    settings.SOUNDS["timer"].play()
 
-        if game_controller.score < game_controller.scoregoal:
-            Timer.every(1, countdown_timer)
-        InputHandler.register_listener(self)
+            if game_controller.score < game_controller.scoregoal:
+                Timer.every(1, countdown_timer)
+
+            InputHandler.register_listener(self)
+            
+        self.veil = Veil()
+        self.veil.alpha = 255
+
+        Timer.tween(
+            settings.LEVEL_CHANGE_DELAY,
+            [
+                (self.veil, {"alpha": 0})
+            ],
+            on_finish=start_level
+        )
 
     def exit(self) -> None:
         InputHandler.unregister_listener(self)
@@ -96,10 +110,12 @@ class PlayState(BaseState):
                 item.on_collide(self.player)
                 item.on_consume(self.player)
 
+
     def render(self, surface: pygame.Surface) -> None:
         world_surface = pygame.Surface((self.tilemap.width, self.tilemap.height))
         self.game_level.render(world_surface)
         self.player.render(world_surface)
+        self.veil.render(world_surface)
         surface.blit(world_surface, (-self.camera.x, -self.camera.y))
 
         render_text(
@@ -121,6 +137,7 @@ class PlayState(BaseState):
             (255, 255, 255),
             shadowed=True,
         )
+
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "pause" and input_data.pressed:
